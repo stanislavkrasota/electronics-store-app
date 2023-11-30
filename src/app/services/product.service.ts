@@ -18,7 +18,7 @@ export class ProductService {
     return of(this.products);
   }
 
-  getProducts(pageIndex: number = 0, pageSize: number = 10): Product[] {
+  private getProducts(pageIndex: number = 0, pageSize: number = 10): Product[] {
     const startIndex: number = pageIndex * pageSize;
     const endIndex: number = startIndex + pageSize;
 

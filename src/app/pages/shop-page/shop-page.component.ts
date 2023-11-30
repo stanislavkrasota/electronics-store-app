@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatGridListModule} from "@angular/material/grid-list";
 import {ProductService} from "../../services/product.service";
@@ -12,7 +20,7 @@ import {MatInput, MatInputModule} from "@angular/material/input";
 import {MatPaginator, MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {BehaviorSubject, debounceTime, distinctUntilChanged, Observable, switchMap} from "rxjs";
 import {tap} from "rxjs/operators";
-import {el} from "@faker-js/faker";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 export class SearchParams {
   searchTerm: string = '';
@@ -43,6 +51,7 @@ export class ShopPageComponent implements OnInit, OnDestroy {
 
   private searchSubject: BehaviorSubject<SearchParams> = new BehaviorSubject<SearchParams>(new SearchParams());
   private productService: ProductService = inject(ProductService);
+  private destroyRef: DestroyRef = inject(DestroyRef);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatInput) searchInput!: MatInput;
@@ -59,7 +68,7 @@ export class ShopPageComponent implements OnInit, OnDestroy {
   }
 
   private getTotalItems(): void {
-    this.productService.getAllProducts().subscribe(_ => {
+    this.productService.getAllProducts().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(_ => {
       this.totalItems = _.length;
     });
   }
@@ -83,13 +92,6 @@ export class ShopPageComponent implements OnInit, OnDestroy {
   private filterProducts(params: SearchParams): Observable<Product[]> {
     return this.productService.filterProductsByName(params).pipe(
       tap(filteredProducts => {
-        // if (params?.searchTerm) {
-        //   this.totalItems = filteredProducts.length;
-        // } else  {
-        //   // this.paginator.firstPage();
-        //   this.totalItems = 0;
-        //   this.getTotalItems()
-        // }
         return filteredProducts;
       })
     );
