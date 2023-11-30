@@ -1,0 +1,32 @@
+<div *ngFor="let item of cartItems$ | async">
+  <mat-card>
+    <div class="d-flex align-items-center">
+      <mat-card-title>{{ item.product.name }}</mat-card-title>
+
+      <button mat-icon-button (click)="removeFromCartPerItem(item.product.id)">
+        <mat-icon aria-label="Remove">remove</mat-icon>
+      </button>
+      <mat-card-subtitle>Quantity: {{ item.quantity }}</mat-card-subtitle>
+      <button mat-icon-button (click)="addItem(item.product)">
+        <mat-icon aria-label="Add">add</mat-icon>
+      </button>
+
+      <mat-card-subtitle>Price/item: {{ item.product.price | currency }}</mat-card-subtitle>
+
+      <button mat-icon-button (click)="removeFormCartByProductType(item.product.id)">
+        <mat-icon aria-label="Remove">delete</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>
+
+<ng-container *ngIf="cartItems$ | async as items">
+  <mat-card *ngIf="items.length > 0">
+    <mat-card-title><h4>Total Sum</h4></mat-card-title>
+    <mat-card-subtitle><h3>{{ totalSum | currency }}</h3></mat-card-subtitle>
+    <button mat-button color="primary" (click)="clearCart()">Clear Cart</button>
+  </mat-card>
+  <ng-container *ngIf="items.length === 0">
+    <p class="text-center">Your cart is empty.</p>
+  </ng-container>
+</ng-container>

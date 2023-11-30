@@ -1,0 +1,17 @@
+<mat-form-field>
+  <mat-label>Search by name</mat-label>
+  <input type="search" matInput (input)="search($event)" />
+</mat-form-field>
+
+<mat-paginator *ngIf="totalItems"
+               [length]="totalItems"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onPageChange($event)"
+></mat-paginator>
+
+<mat-grid-list [cols]="3" rowHeight="1:1">
+  <mat-grid-tile *ngFor="let item of products|async ; let i = index" (click)="openDetailsDialog(item)">
+    <app-product-details [product]="item"></app-product-details>
+  </mat-grid-tile>
+</mat-grid-list>

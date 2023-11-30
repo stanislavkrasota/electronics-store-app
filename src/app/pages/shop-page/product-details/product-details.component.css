@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  background: #fff;
+  border-radius: 8px;
+}
+
+mat-card-content {
+  max-height: 500px;
+  overflow-y: auto;
+}

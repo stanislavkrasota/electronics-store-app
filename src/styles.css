@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+img {width: 100%; height: auto;}
+h1, h2, h3, h3, h5, h6 { font-weight: bold; }
+.text-center {
+  text-align: center;
+}
+.d-flex {
+  display: flex;
+}
+.align-items-center {
+  align-items: center;
+}
+.justify-space-between {
+  justify-content: space-between;
+}
+.w-100 {
+  width: 100%;
+}
